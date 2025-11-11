@@ -1,0 +1,249 @@
+#
+# Copyright (C) 2024 The Android Open Source Project
+# Copyright (C) 2024 SebaUbuntu's TWRP device tree generator
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+DEVICE_PATH := device/infinix/tssi
+
+#vendor_boot configuration
+TARGET_NO_RECOVERY := true
+BOARD_BOOT_HEADER_VERSION := 4
+TARGET_NO_KERNEL := true
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
+BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
+BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
+
+
+# Architecture
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 := 
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := cortex-a75
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := generic
+TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
+
+TARGET_CPU_SMP := true
+ENABLE_CPUSETS := true
+ENABLE_SCHEDBOOST := true
+
+# 64-bit
+TARGET_SUPPORTS_64_BIT_APPS := true
+TARGET_IS_64_BIT := true
+
+# Kernel
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
+
+# Assert
+TARGET_OTA_ASSERT_DEVICE := Infinix-TSSI
+
+# Bootloader
+TARGET_NO_RADIOIMAGE := true
+TARGET_USES_UEFI := true
+TARGET_BOOTLOADER_BOARD_NAME := Infinix-TSSI
+TARGET_NO_BOOTLOADER := false
+
+# Display
+TARGET_SCREEN_DENSITY := 320
+
+# Partitions
+BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
+BOARD_MAIN_SIZE := 8189378560
+BOARD_SUPER_PARTITION_SIZE := 9126805504
+BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 104857600
+BOARD_USES_METADATA_PARTITION := true
+BOARD_SUPER_PARTITION_GROUPS := main
+BOARD_MAIN_PARTITION_LIST += \
+    odm \
+    product \
+    system \
+    system_ext \
+    vendor \
+    vendor_dlkm
+
+BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEM_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
+
+TARGET_COPY_OUT_ODM := odm
+TARGET_COPY_OUT_PRODUCT := product
+TARGET_COPY_OUT_SYSTEM := system
+TARGET_COPY_OUT_SYSTEM_DLKM := system_dlkm
+TARGET_COPY_OUT_SYSTEM_EXT := system_ext
+TARGET_COPY_OUT_VENDOR := vendor
+TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
+
+# DTB and dtb
+# BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_RAMDISK_USE_LZ4 := true
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+
+BOARD_BOOT_HEADER_VERSION := 4
+BOARD_KERNEL_OFFSET := 0x00008000
+BOARD_PAGE_SIZE := 4096
+BOARD_TAGS_OFFSET := 0x00000100
+BOARD_VENDOR_BASE := 0x00000000
+BOARD_RAMDISK_OFFSET := 0x05400000
+BOARD_VENDOR_CMDLINE := console=ttyS1,115200n8 bootconfig bootconfig
+BOARD_DTB_SIZE := 133976
+BOARD_DTB_OFFSET := 0x01f00000
+
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
+BOARD_MKBOOTIMG_ARGS += --vendor_cmdline $(BOARD_VENDOR_CMDLINE)
+BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE) --board ""
+BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_TAGS_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
+
+# Verified Boot (AVB)
+BOARD_AVB_ENABLE := true
+
+# Platform
+TARGET_BOARD_PLATFORM := ums9230
+PRODUCT_PLATFORM := ums9230
+TARGET_SOC := ums9230_X6725_go
+
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+
+# Recovery
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+TARGET_RECOVERY_PIXEL_FORMAT := RGB_565 
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_HAS_LARGE_FILESYSTEM := true
+RECOVERY_SDCARD_ON_DATA := true
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /dev/block/loop%d
+TARGET_USES_MKE2FS := true
+
+# CRYPTO
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+BOARD_USES_METADATA_PARTITION := true
+TW_USE_FSCRYPT_POLICY := 2
+
+# Hack: prevent anti rollback
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := 2099-12-31
+PLATFORM_VERSION := 16.1.0
+PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
+
+# Temp
+TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone16/temp
+
+#build hacks
+ALLOW_MISSING_DEPENDENCIES := true
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
+BUILD_BROKEN_PREBUILT_ELF_FILES := true
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
+RELAX_USES_LIBRARY_CHECK= true
+
+# TWRP Configuration
+TW_THEME := portrait_hdpi
+TW_EXTRA_LANGUAGES := true
+TW_INPUT_BLACKLIST := ""
+TW_BRIGHTNESS_PATH := "/sys/class/backlight/sprd_backlight/brightness"
+TW_MAX_BRIGHTNESS := 4095
+TW_DEFAULT_BRIGHTNESS := 1200
+TW_INCLUDE_FASTBOOTD := true
+TW_INCLUDE_NTFS_3G := true
+TW_USE_TOOLBOX := true
+RECOVERY_SDCARD_ON_DATA := true
+TW_USE_EXTERNAL_STORAGE := true
+TW_EXCLUDE_DEFAULT_USB_INIT := false
+TW_EXCLUDE_TWRPAPP := true
+TW_NO_BIND_SYSTEM := true
+TW_NO_SCREEN_BLANK := true
+TW_NO_LEGACY_PROPS := true
+TW_OVERRIDE_SYSTEM_PROPS := "ro.build.version.sdk"
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
+
+# ADB FIX
+TW_HAS_ADB := true
+TW_HAS_MTP := true
+
+# Kernel module
+TW_LOAD_VENDOR_MODULES := true
+# TW_LOAD_VENDOR_MODULES := "focaltech_ft8756_spi_ts.ko spi-sprd.ko pinctrl-sprd.ko pinctrl-sprd-qogirl6.ko gpio-sprd.ko nvt_nt36xxx_spi_ts.ko"
+
+#logs
+TARGET_USES_LOGD := true
+TWRP_INCLUDE_LOGCAT := true
+
+#prop
+TW_INCLUDE_LIBRESETPROP := true
+TW_INCLUDE_RESETPROP := true
+RECOVERY_SDCARD_ON_DATA := true
+
+TARGET_RECOVERY_DEVICE_MODULES += \
+    libion \
+    libxml2
+
+#additional lib for fix decryption
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
+
+
+#additional lib for fix decryption #2
+TARGET_RECOVERY_DEVICE_MODULES += \
+    libtrusty 
+
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libtrusty \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libtrusty \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libgatekeeper \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libgatekeeper \
+    $(TARGET_OUT_SHARED_LIBRARIES)/lib_android_keymaster_keymint_utils \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/lib_android_keymaster_keymint_utils  \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymint \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libkeymint  \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster_messages \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libkeymaster_messages \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libcppbor_external \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libcppbor_external \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster_portable \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libkeymaster_portable \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libpuresoftkeymasterdevice \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libcppcose_rkp \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libcppcose_rkp \
+$(TARGET_OUT_SHARED_LIBRARIES)/libsoft_attestation_cert \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libsoft_attestation_cert \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libgatekeeper.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libgatekeeper.so \
+  $(TARGET_OUT_SHARED_LIBRARIES)/lib_android_keymaster_keymint_utils.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/lib_android_keymaster_keymint_utils.so  \
+     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymint.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libkeymint.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster_messages.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libkeymaster_messages.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libcppbor_external.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libcppbor_external.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster_messages.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libkeymaster_messages.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster_portable.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libkeymaster_portable.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libcppcose_rkp.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libcppcose_rkp.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libsoft_attestation_cert.so \
+    $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)/libsoft_attestation_cert.so \

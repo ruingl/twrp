@@ -1,0 +1,62 @@
+# TWRP Configuration Flags BY KSN
+# Mount point          fstype    device                                 flags
+
+## Boot & Critical Partitions
+/spl                  emmc      /dev/block/mmcblk0boot0              flags=display="SPL";slotselect
+/spl_bk               emmc      /dev/block/mmcblk0boot1              flags=display="SPL Backup"
+/uboot                emmc      /dev/block/by-name/uboot             flags=display="U-Boot";slotselect
+/boot                 emmc      /dev/block/by-name/boot              flags=display="Boot";backup=1;flashimg=1;slotselect
+/dtbo                 emmc      /dev/block/by-name/dtbo              flags=display="DTBO";backup=1;flashimg=1;slotselect
+
+## TrustZone & Security
+/sml                  emmc      /dev/block/by-name/sml               flags=display="SML";slotselect
+/tos                  emmc      /dev/block/by-name/trustos           flags=display="TrustOS";slotselect
+/teecfg               emmc      /dev/block/by-name/teecfg            flags=display="TEE Config";slotselect
+
+## VBmeta & Verification
+/vbmeta               emmc      /dev/block/by-name/vbmeta            flags=display="VBMeta";slotselect
+/vbmeta_system        emmc      /dev/block/by-name/vbmeta_system     flags=display="VBMeta System";slotselect
+/vbmeta_vendor        emmc      /dev/block/by-name/vbmeta_vendor     flags=display="VBMeta Vendor";slotselect
+
+## Modem & Firmware
+/ltedsp               emmc      /dev/block/by-name/l_ldsp            flags=display="LTE DSP";slotselect
+/ltegdsp              emmc      /dev/block/by-name/l_gdsp            flags=display="LTE GDSP";slotselect
+/lteagdsp             emmc      /dev/block/by-name/l_agdsp           flags=display="LTE AGDSP";slotselect
+/ltecdsp              emmc      /dev/block/by-name/l_cdsp            flags=display="LTE CDSP";slotselect
+/ltemodem             emmc      /dev/block/by-name/l_modem           flags=display="LTE Modem";slotselect
+/ltefixnv1            emmc      /dev/block/by-name/l_fixnv1          flags=display="LTE FixNV1"
+/ltefixnv2            emmc      /dev/block/by-name/l_fixnv2          flags=display="LTE FixNV2"
+/ltedeltanv           emmc      /dev/block/by-name/l_deltanv         flags=display="LTE Delta NV";slotselect
+/lteruntimenv1        emmc      /dev/block/by-name/l_runtimenv1      flags=display="LTE Runtime NV1"
+/lteruntimenv2        emmc      /dev/block/by-name/l_runtimenv2      flags=display="LTE Runtime NV2"
+/wcnmodem             emmc      /dev/block/by-name/wcnmodem          flags=display="WCN Modem";slotselect
+/gnssmodem            emmc      /dev/block/by-name/gnssmodem         flags=display="GNSS Modem";slotselect
+/pmsys                emmc      /dev/block/by-name/pm_sys            flags=display="PM System";slotselect
+
+## System & Logical Partitions
+/system               erofs     system                               flags=display="System";logical;backup=1;slotselect
+/system_ext           erofs     system_ext                           flags=display="SystemExt";logical;backup=1;slotselect
+/vendor               erofs     vendor                               flags=display="Vendor";logical;backup=1;slotselect
+/odm                  erofs     odm                                  flags=display="ODM";logical;backup=1;slotselect
+/product              erofs     product                              flags=display="Product";logical;backup=1;slotselect
+/vendor_dlkm          erofs     vendor_dlkm                          flags=display="Vendor DLKM";logical;backup=1;slotselect
+/system_dlkm          erofs     system_dlkm                          flags=display="System DLKM";logical;backup=1;slotselect
+
+## Data & Cache
+/data                 f2fs      /dev/block/by-name/userdata          flags=display="User Data";wipeingui;backup=1
+/cache                f2fs      /dev/block/by-name/cache             flags=display="Cache";wipeingui
+/metadata             f2fs      /dev/block/by-name/metadata          flags=display="Metadata"
+
+## Persistent & Misc
+/misc                 emmc      /dev/block/by-name/misc              flags=display="Misc"
+/persist              emmc      /dev/block/by-name/persist           flags=display="Persist";flashimg=1
+/logo                 emmc      /dev/block/by-name/logo              flags=display="Logo"
+/fbootlogo            emmc      /dev/block/by-name/fbootlogo         flags=display="Fastboot Logo"
+/miscdata             emmc      /dev/block/by-name/miscdata          flags=display="Misc Data"
+/tranfs               ext4      /dev/block/by-name/tranfs            flags=display="TranFS"
+
+## Vendor Mounts
+/mnt/vendor           ext4      /dev/block/by-name/prodnv            flags=display="Production NV"
+
+## External Storage
+/storage/sdcard0      vfat      /dev/block/mmcblk1p1                 flags=display="SD Card";storage;removable;wipeingui
